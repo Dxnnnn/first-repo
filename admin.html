@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Profile - Full-Stack App</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <div class="main-container">
+    <header>
+      <div class="container-1">
+        <h1>Full-Stack App</h1>
+        <nav class="nav-bar">
+          <div class="admin-menu-wrapper">
+            <button class="admin-toggle" id="adminToggle">
+              Admin ▾
+            </button>
+            <ul class="admin-menu" id="adminMenu">
+              <li><button type="button" data-action="profile">Profile</button></li>
+              <li><button type="button" class="role-admin" data-action="employees">Employees</button></li>
+              <li><button type="button" class="role-admin" data-action="accounts">Accounts</button></li>
+              <li><button type="button" class="role-admin" data-action="departments">Departments</button></li>
+              <li><button type="button" data-action="requests">My Requests</button></li>
+              <li class="divider"></li>
+              <li><button type="button" class="logout" data-action="logout">Logout</button></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="profile-page">
+      <h2 class="profile-title">My Profile</h2>
+      <section class="profile-card">
+        <div class="profile-body" id="profile-view">
+          <p class="profile-name" id="profile-name">Admin User</p>
+          <p class="profile-line">
+            <span class="label">Email:</span>
+            <span id="profile-email">admin@example.com</span>
+          </p>
+          <p class="profile-line">
+            <span class="label">Role:</span>
+            <span id="profile-role">Admin</span>
+          </p>
+          <button class="btn btn-secondary" id="editProfileBtn">Edit Profile</button>
+        </div>
+
+        <div class="profile-body hidden" id="profile-edit">
+          <form id="profileForm">
+            <div class="form-group">
+              <label for="edit-name">Name</label>
+              <input type="text" id="edit-name" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label for="edit-email">Email</label>
+              <input type="email" id="edit-email" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label for="edit-password">New Password (optional)</label>
+              <input type="password" id="edit-password" class="form-control" placeholder="Leave blank to keep current">
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">Save</button>
+              <button type="button" class="btn btn-secondary" id="cancelEditProfile">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="admin.js"></script>
+</body>
+</html>
+

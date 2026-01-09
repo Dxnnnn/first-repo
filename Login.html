@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Full-stack</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div class="main-container"> 
+        <header>
+            <div class="container-1">
+                <h1>Full-Stack App</h1>
+                <nav class="nav-bar">
+                    <a href="Login.html">Login</a>
+                    <a href="Register.html">Register</a>
+                </nav>
+            </div>
+        </header>
+
+        <div class="container mt-5">
+            <h1 class="log-in">Login</h1>
+
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        class="form-control" 
+                        required 
+                        placeholder="Enter your email"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        class="form-control" 
+                        required 
+                        placeholder="Enter your password"
+                    >
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Login</button>
+                    <button type="button" class="btn btn-secondary" onclick="window.location.href='index.html'">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="login.js"></script>
+</body>
+</html>
