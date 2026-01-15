@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Profile - Full-Stack App</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="index.css">
 </head>
 <body>
@@ -31,44 +32,410 @@
     </header>
 
     <main class="profile-page">
-      <h2 class="profile-title">My Profile</h2>
-      <section class="profile-card">
-        <div class="profile-body" id="profile-view">
-          <p class="profile-name" id="profile-name">Admin User</p>
-          <p class="profile-line">
-            <span class="label">Email:</span>
-            <span id="profile-email">admin@example.com</span>
-          </p>
-          <p class="profile-line">
-            <span class="label">Role:</span>
-            <span id="profile-role">Admin</span>
-          </p>
-          <button class="btn btn-secondary" id="editProfileBtn">Edit Profile</button>
-        </div>
+      <!-- Profile Section -->
+      <div id="profile-section">
+        <h2 class="profile-title">My Profile</h2>
+        <section class="profile-card">
+          <div class="profile-body" id="profile-view">
+            <p class="profile-name" id="profile-name">Admin User</p>
+            <p class="profile-line">
+              <span class="label">Email:</span>
+              <span id="profile-email">admin@example.com</span>
+            </p>
+            <p class="profile-line">
+              <span class="label">Role:</span>
+              <span id="profile-role">Admin</span>
+            </p>
+            <button class="btn btn-secondary" id="editProfileBtn">Edit Profile</button>
+          </div>
 
-        <div class="profile-body hidden" id="profile-edit">
-          <form id="profileForm">
-            <div class="form-group">
-              <label for="edit-name">Name</label>
-              <input type="text" id="edit-name" class="form-control" required>
-            </div>
-            <div class="form-group">
-              <label for="edit-email">Email</label>
-              <input type="email" id="edit-email" class="form-control" required>
-            </div>
-            <div class="form-group">
-              <label for="edit-password">New Password (optional)</label>
-              <input type="password" id="edit-password" class="form-control" placeholder="Leave blank to keep current">
-            </div>
-            <div class="form-actions">
-              <button type="submit" class="btn btn-primary">Save</button>
-              <button type="button" class="btn btn-secondary" id="cancelEditProfile">Cancel</button>
-            </div>
-          </form>
-        </div>
-      </section>
+          <div class="profile-body hidden" id="profile-edit">
+            <form id="profileForm">
+              <div class="form-group">
+                <label for="edit-name">Name</label>
+                <input type="text" id="edit-name" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label for="edit-email">Email</label>
+                <input type="email" id="edit-email" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label for="edit-password">New Password (optional)</label>
+                <input type="password" id="edit-password" class="form-control" placeholder="Leave blank to keep current">
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-secondary" id="cancelEditProfile">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </section>
+      </div>
+
+      <!-- Employees Section -->
+      <div id="employees-section" class="hidden">
+        <h2 class="profile-title">Employees</h2>
+        <section class="profile-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h3 style="margin: 0;">Employee Management</h3>
+            <button type="button" class="btn btn-success btn-sm" id="addEmployeeBtn">+ Add Employee</button>
+          </div>
+          <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+              <tr style="border-bottom: 2px solid #eee;">
+                <th style="padding: 0.75rem; text-align: left;">ID</th>
+                <th style="padding: 0.75rem; text-align: left;">Name</th>
+                <th style="padding: 0.75rem; text-align: left;">Position</th>
+                <th style="padding: 0.75rem; text-align: left;">Dept</th>
+                <th style="padding: 0.75rem; text-align: left;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="employeesTableBody">
+              <!-- Employees will be rendered here -->
+            </tbody>
+          </table>
+        </section>
+      </div>
+
+      <!-- Accounts Section -->
+      <div id="accounts-section" class="hidden">
+        <h2 class="profile-title">Accounts</h2>
+        <section class="profile-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h3 style="margin: 0;">Account Management</h3>
+            <button type="button" class="btn btn-success" id="addAccountBtn">+ Add Account</button>
+          </div>
+          <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+              <tr style="border-bottom: 2px solid #eee;">
+                <th style="padding: 0.75rem; text-align: left;">Name</th>
+                <th style="padding: 0.75rem; text-align: left;">Email</th>
+                <th style="padding: 0.75rem; text-align: left;">Role</th>
+                <th style="padding: 0.75rem; text-align: left;">Verified</th>
+                <th style="padding: 0.75rem; text-align: left;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="accountsTableBody">
+              <!-- Accounts will be rendered here -->
+            </tbody>
+          </table>
+        </section>
+      </div>
+
+      <!-- Departments Section -->
+      <div id="departments-section" class="hidden">
+        <h2 class="profile-title">Departments</h2>
+        <section class="profile-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h3 style="margin: 0;">Department Management</h3>
+            <button type="button" class="btn btn-success" id="addDepartmentBtn">+ Add Department</button>
+          </div>
+          <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+              <tr style="border-bottom: 2px solid #eee;">
+                <th style="padding: 0.75rem; text-align: left;">Name</th>
+                <th style="padding: 0.75rem; text-align: left;">Description</th>
+                <th style="padding: 0.75rem; text-align: left;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="departmentsTableBody">
+              <!-- Departments will be rendered here -->
+            </tbody>
+          </table>
+        </section>
+      </div>
+
+      <!-- Requests Section -->
+      <div id="requests-section" class="hidden">
+        <h2 class="profile-title">My Requests</h2>
+        <section class="profile-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h3 style="margin: 0;">Request Management</h3>
+            <button type="button" class="btn btn-success" id="addRequestBtn">+ New Request</button>
+          </div>
+          <div id="requestsContent">
+            <!-- Requests will be rendered here -->
+          </div>
+        </section>
+      </div>
     </main>
   </div>
+
+  <!-- Add Department Modal -->
+  <div id="addDepartmentModal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add Department</h3>
+        <button type="button" class="close-modal" id="closeAddDepartmentModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="addDepartmentForm">
+          <div class="form-group">
+            <label for="add-dept-name">Department Name</label>
+            <input type="text" id="add-dept-name" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="add-dept-description">Description</label>
+            <input type="text" id="add-dept-description" class="form-control" required>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="saveAddDepartment">Save</button>
+        <button type="button" class="btn btn-secondary" id="cancelAddDepartment">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Department Modal -->
+  <div id="editDepartmentModal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Edit Department</h3>
+        <button type="button" class="close-modal" id="closeEditDepartmentModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="editDepartmentForm">
+          <div class="form-group">
+            <label for="edit-dept-name">Department Name</label>
+            <input type="text" id="edit-dept-name" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="edit-dept-description">Description</label>
+            <input type="text" id="edit-dept-description" class="form-control" required>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="saveEditDepartment">Save</button>
+        <button type="button" class="btn btn-secondary" id="cancelEditDepartment">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Department Modal -->
+  <div id="deleteDepartmentModal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Delete Department</h3>
+        <button type="button" class="close-modal" id="closeDeleteDepartmentModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete <span id="delete-dept-name"></span>?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" id="confirmDeleteDepartment">Delete</button>
+        <button type="button" class="btn btn-secondary" id="cancelDeleteDepartment">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Employee Modal -->
+  <div id="addEmployeeModal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add Employee</h3>
+        <button type="button" class="close-modal" id="closeAddEmployeeModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="addEmployeeForm">
+          <div class="form-group">
+            <label for="add-emp-id">Employee ID</label>
+            <input type="text" id="add-emp-id" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="add-emp-email">User Email</label>
+            <input type="email" id="add-emp-email" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="add-emp-position">Position</label>
+            <input type="text" id="add-emp-position" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="add-emp-dept">Department</label>
+            <input type="text" id="add-emp-dept" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="add-emp-hire-date">Hire Date</label>
+            <input type="date" id="add-emp-hire-date" class="form-control" required>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="saveAddEmployee">Save</button>
+        <button type="button" class="btn btn-secondary" id="cancelAddEmployee">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Employee Modal -->
+  <div id="editEmployeeModal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Edit Employee</h3>
+        <button type="button" class="close-modal" id="closeEditEmployeeModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="editEmployeeForm">
+          <div class="form-group">
+            <label for="edit-emp-id">Employee ID</label>
+            <input type="text" id="edit-emp-id" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="edit-emp-email">User Email</label>
+            <input type="email" id="edit-emp-email" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="edit-emp-position">Position</label>
+            <input type="text" id="edit-emp-position" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="edit-emp-dept">Department</label>
+            <input type="text" id="edit-emp-dept" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="edit-emp-hire-date">Hire Date</label>
+            <input type="date" id="edit-emp-hire-date" class="form-control" required>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="saveEditEmployee">Save</button>
+        <button type="button" class="btn btn-secondary" id="cancelEditEmployee">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Account Modal -->
+  <div id="addAccountModal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add Account</h3>
+        <button type="button" class="close-modal" id="closeAddAccountModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="addAccountForm">
+          <div class="form-group">
+            <label for="add-acc-first-name">First Name</label>
+            <input type="text" id="add-acc-first-name" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="add-acc-last-name">Last Name</label>
+            <input type="text" id="add-acc-last-name" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="add-acc-email">Email</label>
+            <input type="email" id="add-acc-email" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="add-acc-password">Password</label>
+            <input type="password" id="add-acc-password" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="add-acc-role">Role</label>
+            <select id="add-acc-role" class="form-control" required>
+              <option value="User">User</option>
+              <option value="Admin">Admin</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>
+              <input type="checkbox" id="add-acc-verified"> Verified
+            </label>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="saveAddAccount">Save</button>
+        <button type="button" class="btn btn-secondary" id="cancelAddAccount">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Account Modal -->
+  <div id="editAccountModal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Edit Account</h3>
+        <button type="button" class="close-modal" id="closeEditAccountModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="editAccountForm">
+          <div class="form-group">
+            <label for="edit-acc-first-name">First Name</label>
+            <input type="text" id="edit-acc-first-name" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="edit-acc-last-name">Last Name</label>
+            <input type="text" id="edit-acc-last-name" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="edit-acc-email">Email</label>
+            <input type="email" id="edit-acc-email" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="edit-acc-password">Password (leave blank to keep current)</label>
+            <input type="password" id="edit-acc-password" class="form-control" placeholder="Leave blank to keep current">
+          </div>
+          <div class="form-group">
+            <label for="edit-acc-role">Role</label>
+            <select id="edit-acc-role" class="form-control" required>
+              <option value="User">User</option>
+              <option value="Admin">Admin</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>
+              <input type="checkbox" id="edit-acc-verified"> Verified
+            </label>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="saveEditAccount">Save</button>
+        <button type="button" class="btn btn-secondary" id="cancelEditAccount">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- New Request Modal -->
+  <div id="newRequestModal" class="modal hidden">
+    <div class="modal-content" style="max-width: 600px;">
+      <div class="modal-header">
+        <h3>New Request</h3>
+        <button type="button" class="close-modal" id="closeNewRequestModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="newRequestForm">
+          <div class="form-group">
+            <label for="request-type">Type</label>
+            <select id="request-type" class="form-control" required>
+              <option value="Equipment">Equipment</option>
+              <option value="Software">Software</option>
+              <option value="Access">Access</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Items</label>
+            <div id="request-items-container">
+              <div class="request-item" style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem; align-items: center;">
+                <input type="text" class="form-control" placeholder="Item name" style="flex: 1;" required>
+                <input type="number" class="form-control" value="1" min="1" style="width: 80px;" required>
+                <button type="button" class="btn btn-danger" onclick="removeRequestItem(this)">×</button>
+              </div>
+            </div>
+            <button type="button" class="btn btn-success" id="addRequestItem" style="margin-top: 0.5rem;">+ Add Item</button>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="submitRequest">Submit Request</button>
+        <button type="button" class="btn btn-secondary" id="cancelNewRequest">Cancel</button>
+      </div>
+    </div>
+  </div>
+
   <script src="admin.js"></script>
 </body>
 </html>

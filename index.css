@@ -113,6 +113,8 @@ header {
     max-width: 500px;
     margin-top: 2rem;
     margin-left: 350px;
+    border: 1px solid #ddd;
+    padding: 1.5rem;
 }
 h1.log-in{
     margin-left: 550px;
@@ -156,6 +158,32 @@ h1.log-in{
     flex: 1;
 }
 
+h1.register-title{
+     margin-left: 450px;
+}
+/* Register Form Styles */
+.register-breadcrumb {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #000;
+    margin-bottom: 1rem;
+}
+
+.register-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    color: #000;
+}
+
+.register-form {
+    max-width: 500px;
+    margin-top: 2rem;
+    margin-left: 350px;
+    border: 1px solid #ddd;
+    padding: 1.5rem;
+}
+
 /* Admin profile page */
 .profile-page {
     max-width: 900px;
@@ -172,6 +200,7 @@ h1.log-in{
     border-radius: 4px;
     background-color: #fff;
     max-width: 800px;
+    padding: 1rem;
 }
 
 .profile-body {
@@ -227,7 +256,7 @@ h1.log-in{
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     min-width: 160px;
     display: none;
-    z-index: 10;
+    z-index: 1001;
 }
 
 .admin-menu.open {
@@ -247,6 +276,7 @@ h1.log-in{
     font-size: 0.9rem;
     cursor: pointer;
     color: #111;
+    pointer-events: auto;
 }
 
 .admin-menu button:hover {
@@ -266,6 +296,150 @@ h1.log-in{
     display: none;
 }
 
+/* Modal styles */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal.hidden {
+    display: none !important;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #666;
+}
+
+.close-modal:hover {
+    color: #333;
+}
+
+.modal-body {
+    margin-bottom: 1.5rem;
+    border: 1px solid #ddd;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+/* Button styles */
+.btn-success {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+/* Table styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+table thead {
+    background-color: #f8f9fa;
+}
+
+table th {
+    padding: 0.75rem;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 2px solid #dee2e6;
+}
+
+table td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #dee2e6;
+}
+
+table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* Action buttons */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-edit {
+    padding: 0.4rem 0.8rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.btn-edit:hover {
+    background-color: #0056b3;
+}
+
+.btn-delete {
+    padding: 0.4rem 0.8rem;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.btn-delete:hover {
+    background-color: #c82333;
+}
+
 /* Responsive sizing for smaller screens */
 @media (max-width: 768px) {
     .container {
@@ -280,5 +454,10 @@ h1.log-in{
     .container p,
     .container ul {
         font-size: 0.95rem;
+    }
+    
+    .modal-content {
+        width: 95%;
+        padding: 0.75rem;
     }
 }
