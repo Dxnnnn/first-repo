@@ -408,6 +408,7 @@ function renderRequests() {
   if (!requestsContent) return;
   
   const reqList = getRequests();
+  const isUserAdmin = isAdmin();
   
   if (!reqList.length) {
     requestsContent.innerHTML = `
@@ -430,18 +431,38 @@ function renderRequests() {
         </tr>
       </thead>
       <tbody>
-        ${reqList.map((req, index) => `
-          <tr data-index="${index}">
-            <td>${req.type || ""}</td>
-            <td>${req.items ? req.items.map(i => `${i.name} (${i.quantity})`).join(", ") : ""}</td>
-            <td>${req.status || "Pending"}</td>
-            <td>
+        ${reqList.map((req, index) => {
+          const status = req.status || "Pending";
+          const statusClass = status === "Approved" ? "text-success" : status === "Not Approved" ? "text-danger" : "";
+          
+          let actionsHtml = '';
+          if (isUserAdmin) {
+            // Admin sees approve/not approve buttons
+            actionsHtml = `
               <div class="action-buttons">
+                <button type="button" class="btn btn-success btn-sm" data-action="approve" data-index="${index}" ${status === "Approved" ? "disabled" : ""}>Approve</button>
+                <button type="button" class="btn btn-danger btn-sm" data-action="not-approve" data-index="${index}" ${status === "Not Approved" ? "disabled" : ""}>Not Approve</button>
+              </div>
+            `;
+          } else {
+            // Regular users see edit and delete buttons
+            actionsHtml = `
+              <div class="action-buttons">
+                <button type="button" class="btn-edit" data-action="edit" data-index="${index}">Edit</button>
                 <button type="button" class="btn-delete" data-action="delete" data-index="${index}">Delete</button>
               </div>
-            </td>
-          </tr>
-        `).join("")}
+            `;
+          }
+          
+          return `
+            <tr data-index="${index}">
+              <td>${req.type || ""}</td>
+              <td>${req.items ? req.items.map(i => `${i.name} (${i.quantity})`).join(", ") : ""}</td>
+              <td class="${statusClass}">${status}</td>
+              <td>${actionsHtml}</td>
+            </tr>
+          `;
+        }).join("")}
       </tbody>
     </table>
   `;
@@ -543,6 +564,32 @@ function openModal(modalId, data = {}) {
         </div>
       `;
     }
+    window.editingRequestIndex = null;
+  } else if (modalId === 'editRequestModal' && data.request) {
+    // Populate edit request form (only type and items are editable)
+    const editRequestType = document.getElementById("edit-request-type");
+    const editItemsContainer = document.getElementById("edit-request-items-container");
+    if (editRequestType) editRequestType.value = data.request.type || 'Equipment';
+    if (editItemsContainer) {
+      const items = data.request.items || [{ name: '', quantity: 1 }];
+      editItemsContainer.innerHTML = items.map(item => `
+        <div class="request-item" style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem; align-items: center;">
+          <input type="text" class="form-control" placeholder="Item name" style="flex: 1;" value="${item.name || ''}" required>
+          <input type="number" class="form-control" value="${item.quantity || 1}" min="1" style="width: 80px;" required>
+          <button type="button" class="btn btn-danger" onclick="this.parentElement.remove()">×</button>
+        </div>
+      `).join('');
+      if (items.length === 0) {
+        editItemsContainer.innerHTML = `
+          <div class="request-item" style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem; align-items: center;">
+            <input type="text" class="form-control" placeholder="Item name" style="flex: 1;" required>
+            <input type="number" class="form-control" value="1" min="1" style="width: 80px;" required>
+            <button type="button" class="btn btn-danger" onclick="this.parentElement.remove()">×</button>
+          </div>
+        `;
+      }
+    }
+    window.editingRequestIndex = data.index;
   } else if (modalId === 'editDepartmentModal' && data.department) {
     const editDeptName = document.getElementById("edit-dept-name");
     const editDeptDescription = document.getElementById("edit-dept-description");
@@ -562,6 +609,7 @@ function closeModal(modalId) {
   window.editingDepartmentIndex = null;
   window.editingAccountIndex = null;
   window.editingEmployeeIndex = null;
+  window.editingRequestIndex = null;
 }
 
 // Set up department table event listener and ensure modals are hidden
@@ -773,12 +821,38 @@ document.addEventListener('DOMContentLoaded', function() {
       const idx = Number(index);
       if (idx < 0 || idx >= list.length) return;
 
-      if (action === "delete") {
+      if (action === "edit") {
+        // Only allow users (not admin) to edit requests
+        if (isAdmin()) {
+          alert('Only regular users can edit requests.');
+          return;
+        }
+        const request = list[idx];
+        openModal("editRequestModal", { request: request, index: idx });
+      } else if (action === "delete") {
         if (confirm("Are you sure you want to delete this request?")) {
           list.splice(idx, 1);
           saveRequests(list);
           renderRequests();
         }
+      } else if (action === "approve") {
+        // Admin action: approve request
+        if (!isAdmin()) {
+          alert('Access denied. Admin only.');
+          return;
+        }
+        list[idx].status = "Approved";
+        saveRequests(list);
+        renderRequests();
+      } else if (action === "not-approve") {
+        // Admin action: not approve request
+        if (!isAdmin()) {
+          alert('Access denied. Admin only.');
+          return;
+        }
+        list[idx].status = "Not Approved";
+        saveRequests(list);
+        renderRequests();
       }
     }
   });
@@ -1054,5 +1128,66 @@ document.addEventListener('DOMContentLoaded', function() {
     `;
     
     closeModal("newRequestModal");
+  });
+
+  // Edit Request modal handlers
+  const closeEditRequestModal = document.getElementById("closeEditRequestModal");
+  const cancelEditRequest = document.getElementById("cancelEditRequest");
+  const saveEditRequest = document.getElementById("saveEditRequest");
+  const addEditRequestItem = document.getElementById("addEditRequestItem");
+
+  closeEditRequestModal?.addEventListener("click", () => closeModal("editRequestModal"));
+  cancelEditRequest?.addEventListener("click", () => closeModal("editRequestModal"));
+
+  addEditRequestItem?.addEventListener("click", () => {
+    const container = document.getElementById("edit-request-items-container");
+    if (!container) return;
+    
+    const newItem = document.createElement("div");
+    newItem.className = "request-item";
+    newItem.style.cssText = "display: flex; gap: 0.5rem; margin-bottom: 0.5rem; align-items: center;";
+    newItem.innerHTML = `
+      <input type="text" class="form-control" placeholder="Item name" style="flex: 1;" required>
+      <input type="number" class="form-control" value="1" min="1" style="width: 80px;" required>
+      <button type="button" class="btn btn-danger" onclick="this.parentElement.remove()">×</button>
+    `;
+    container.appendChild(newItem);
+  });
+
+  saveEditRequest?.addEventListener("click", () => {
+    const editRequestType = document.getElementById("edit-request-type");
+    const editItemsContainer = document.getElementById("edit-request-items-container");
+    
+    if (!editRequestType || !editItemsContainer) return;
+    
+    const list = getRequests();
+    const idx = window.editingRequestIndex;
+    if (idx === null || idx === undefined || idx < 0 || idx >= list.length) {
+      alert("Error: Request not found.");
+      return;
+    }
+    
+    const items = Array.from(editItemsContainer.querySelectorAll(".request-item")).map(item => {
+      const nameInput = item.querySelector('input[type="text"]');
+      const qtyInput = item.querySelector('input[type="number"]');
+      return {
+        name: nameInput?.value.trim() || "",
+        quantity: parseInt(qtyInput?.value || "1")
+      };
+    }).filter(item => item.name);
+    
+    if (!items.length) {
+      alert("Please add at least one item.");
+      return;
+    }
+    
+    // Update only type and items (preserve status and date)
+    list[idx].type = editRequestType.value;
+    list[idx].items = items;
+    
+    saveRequests(list);
+    renderRequests();
+    
+    closeModal("editRequestModal");
   });
 });
